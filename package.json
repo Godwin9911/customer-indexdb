@@ -1,0 +1,11 @@
+{
+  "name": "customer-indexdb",
+  "version": "1.0.0",
+  "description": "storing customer data in indexdb",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Godwin Agedah",
+  "license": "ISC"
+}
