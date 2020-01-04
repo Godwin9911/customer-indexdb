@@ -137,35 +137,73 @@ window.addEventListener('load', (event) => {
       }
     }
   };
+
+  const inputs = document.querySelectorAll('#submitForm input');
+  /*let addDirtyClass = (event) => {
+    event.srcElement.classList.toggle('dirty', true);
+  } */
+
+  /* inputs.forEach(input => {
+    input.addEventListener('blur', addDirtyClass);
+    input.addEventListener('invalid', addDirtyClass);
+    input.addEventListener('valid', addDirtyClass);
+  });
+
+  */
+
   
   // Add Customer
-  const form = document.getElementById('form');
+  const form = document.getElementById('submitForm');
   form.addEventListener('submit', (event) => {
-    event.preventDefault()
-    let formData = new FormData(form);
-    let customer = {}
-    for (const [key, value] of formData) {
-      customer[key] = value.trim();
-    }
-    
-    // save to indexdb
-    let transaction = db.transaction('customers', 'readwrite');
-    transaction.oncomplete = function(event) {
-      console.log('All done');
-    }
-    transaction.onerror = function(event) {
-      transaction.abort();
-      console.error('Transaction Error')
-    }
-    let customerObjectStore = transaction.objectStore('customers');
-    let request = customerObjectStore.add(customer);
-    request.onsuccess = function(event) {
-      getAllCustomers(db);
-      form.reset();
-      console.log('Customer Added')
-    }
-    request.onerror = function(event) {
-      console.error('Error Adding Customer');
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      inputs.forEach(input => {
+        let span;
+        if (input.nextElementSibling === null) {
+          span = document.createElement('span');
+          input.parentNode.appendChild(span);
+        } else {
+          span = input.nextElementSibling;
+        }
+        if (!input.checkValidity()) {
+          span.textContent = input.validationMessage;
+          span.classList.add('is-invalid');
+          input.classList.add('is-invalid');
+        } else {
+          span.textContent = 'looks Good!';
+          span.classList.add('is-valid');
+          input.classList.add('is-valid')
+        }
+      });
+      return;
+    } else {
+      event.preventDefault()
+      let formData = new FormData(submitForm);
+      let customer = {}
+      for (const [key, value] of formData) {
+        customer[key] = value.trim();
+      }
+      
+      // save to indexdb
+      let transaction = db.transaction('customers', 'readwrite');
+      transaction.oncomplete = function(event) {
+        console.log('All done');
+      }
+      transaction.onerror = function(event) {
+        transaction.abort();
+        console.error('Transaction Error')
+      }
+      let customerObjectStore = transaction.objectStore('customers');
+      let request = customerObjectStore.add(customer);
+      request.onsuccess = function(event) {
+        getAllCustomers(db);
+        form.reset();
+        console.log('Customer Added')
+      }
+      request.onerror = function(event) {
+        console.error('Error Adding Customer');
+      }
+        return;
     }
   });
 

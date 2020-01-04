@@ -5,6 +5,11 @@ body {
   font: normal 18px/1.5 "Fira Sans", "Helvetica Neue", sans-serif;
 } 
 
+span {
+  flex-basis: 100%;
+  text-align: right;
+}
+
 .container {
   width: 80%;
   max-width: 1200px;
@@ -38,6 +43,25 @@ body {
   text-transform: uppercase;
   flex: 1 0 120px;
   max-width: 220px;
+}
+
+input.dirty:not(:focus):invalid {
+  border-color: #c11
+}
+input.dirty:not(:focus):valid {
+  border-color: rgb(51, 223, 51);
+}
+input.is-invalid{
+  border-color: #c11;
+}
+input.is-valid{
+  border-color: rgb(33, 207, 100);
+}
+.is-invalid {
+  color: #c11
+}
+.is-valid {
+  color: rgb(33, 207, 100);
 }
 
 .flex-outer li input:not([type='checkbox']) {
